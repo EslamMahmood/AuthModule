@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:task/pages/forgetpassword.dart';
 import 'package:task/pages/register_page.dart';
 import 'package:task/pages/welcome_page.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 class LoginPage extends StatelessWidget {
-  final String email='eslammahmood@gmail.com';
+  TextEditingController _emailController = TextEditingController();
+  bool isValidEmail(String email ) {
+    //String email='eslammahmood@gmail.com';
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +45,14 @@ class LoginPage extends StatelessWidget {
             child: 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                String email = _emailController.text.trim();
+    if (isValidEmail(email)) {
+      // Perform sign up logic here
+      Fluttertoast.showToast(msg: 'Login successfully');
+      
+    } else {
+      Fluttertoast.showToast(msg: 'Invalid email or password');}
+      Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => WelcomePage()),
                 );

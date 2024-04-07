@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import'package:task/pages/login_page.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:task/pages/welcome_page.dart';
+
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -11,7 +16,11 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _passwordsMatch = true;
-final String email='eslammahmood@gmail.com';
+
+bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,20 +68,26 @@ final String email='eslammahmood@gmail.com';
             child: 
               ElevatedButton(
                 onPressed: () {
-
-                  if (_passwordController.text == _confirmPasswordController.text) {
+ String email = _emailController.text.trim();
+    if (isValidEmail(email)) {
+      // Perform sign up logic here
+      Fluttertoast.showToast(msg: 'Signed up successfully');
+    } else {
+      Fluttertoast.showToast(msg: 'Invalid email');}
+                  if (_passwordController.text == _confirmPasswordController.text && isValidEmail(email)) {
                     setState(() {
                       _passwordsMatch = true;
+                
                     });
-                    
+                          Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => WelcomePage()),
+                  );
                   } else {
                     setState(() {
                       _passwordsMatch = false;
                     });
                   }
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),);
                 },
                 child: Text('Sign Up',style: TextStyle(color: Colors.grey[700],fontSize: 20,
                     fontWeight: FontWeight.bold,),),
