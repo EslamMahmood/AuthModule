@@ -4,12 +4,11 @@ import 'package:task/pages/register_page.dart';
 import 'package:task/pages/welcome_page.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:task/core/validation.dart';
 class LoginPage extends StatelessWidget {
-  TextEditingController _emailController = TextEditingController();
-  bool isValidEmail(String email ) {
-    //String email='eslammahmood@gmail.com';
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
+  TextEditingController emailController =TextEditingController();
+  TextEditingController passwordController =TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,40 +23,64 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
           Icon(Icons.person,size: 100,color: Colors.grey[700],),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Text('Welcome back,Enter your credentials',style: TextStyle(color: Colors.grey[500]),),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Email',
+          const SizedBox(height: 30,),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:ChatValidation().emailValidate,
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: decoration.copyWith(
+                  labelText:'Email',
+                  prefixIcon: const Icon(
+                    Icons.mail,
+                  ),
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
-            ),
-            SizedBox(height: 20,),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Password',
+        
+            
+            SizedBox(height: 40,),
+            TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: ChatValidation().passwordValidate,
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                decoration: decoration.copyWith(
+                  labelText:'Password',
+                  prefixIcon: const Icon(
+                    Icons.key,
+                  ),
+                  suffixIcon:const Icon(
+                    Icons.remove_red_eye_sharp,
+                  ) ,
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
-            ),
-            SizedBox(height: 70),
+            SizedBox(height: 50),
           Container(
             height: 50,
             width: 200,
             child: 
-            ElevatedButton(
-              onPressed: () {
-                String email = _emailController.text.trim();
-    if (isValidEmail(email)) {
-      // Perform sign up logic here
-      Fluttertoast.showToast(msg: 'Login successfully');
-      
-    } else {
-      Fluttertoast.showToast(msg: 'Invalid email or password');}
-      Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WelcomePage()),
-                );
-              },
-              child: Text('Login',style: TextStyle(color: Colors.grey[700],fontSize: 20,
+            MaterialButton(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10.0))
+                  ),
+                  color: Colors.grey,
+                  minWidth: double.infinity,
+                  elevation: 5,
+                  onPressed: (){
+                    Fluttertoast.showToast(msg:"Login successfully");
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> WelcomePage()));
+                  },
+              child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 20,
                     fontWeight: FontWeight.bold,),
               ),  ),),
             SizedBox(height: 20),
@@ -87,4 +110,32 @@ class LoginPage extends StatelessWidget {
       ),
      ), );
   }
+InputDecoration decoration = const InputDecoration(
+    labelStyle: TextStyle(
+      color: Colors.grey,
+    ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.grey,
+          width: 3,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20),
+        ),
+      ),
+      );
+
 }

@@ -83,16 +83,18 @@ class _VerificationPageState extends State<VerificationPage> {
             height: 50,
             width: 200,
             child: 
-            ElevatedButton(
-            
-              onPressed: () {
-                // Perform verification logic
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NewPasswordPage()),
-                );
-              },
-              child: Text('Verify',style: TextStyle(color: Colors.grey[700],fontSize: 15,
+           MaterialButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10.0))
+                    ),
+                    color: Colors.grey,
+                    minWidth: double.infinity,
+                    elevation: 5,
+                    onPressed: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> NewPasswordPage()));
+                    },
+              child: Text('Verify',style: TextStyle(color: Colors.white,fontSize: 15,
                     fontWeight: FontWeight.bold,),
               
             ),
